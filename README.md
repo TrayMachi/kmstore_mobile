@@ -42,3 +42,63 @@ flutter run
 
 - Ubah file main.dart untuk mengkonfigurasi layout dari app KMStore
 - Untuk page home, saya buat di file menu.dart dimana terdapat 2 class stateless widget untuk container layar dan komponen tombol yang saya buat.
+
+# Tugas 8
+Berikut jawaban dari Tugas 8
+
+### Kegunaan const di Flutter
+Dalam Flutter, const digunakan untuk membuat objek atau widget yang bersifat konstan atau immutable (tidak berubah). Jika sebuah objek atau widget ditandai dengan const, maka Flutter tahu bahwa objek tersebut tidak akan berubah selama masa pakainya, sehingga objek tersebut hanya perlu dibuat satu kali. Ini sangat bermanfaat dalam meningkatkan efisiensi memori dan performa, karena Flutter tidak perlu membuat ulang objek yang tidak berubah.
+
+- Keuntungan menggunakan const:
+Peningkatan Performa: Mengurangi jumlah objek yang dibuat ulang, sehingga mempercepat rendering dan menurunkan konsumsi memori.
+Optimasi Hot Reload: Ketika melakukan hot reload, objek const tidak akan di-refresh sehingga mempercepat proses pengembangan.
+
+- Kapan menggunakan const:
+
+Jika widget atau nilai tersebut tidak akan berubah selama masa pakainya, seperti warna, padding, atau teks statis.
+- Kapan tidak menggunakan const:
+
+Jika objek tersebut bergantung pada data yang mungkin berubah, seperti state dinamis atau nilai yang diambil dari pengguna.
+
+### Penggunaan Column dan Row pada Flutter
+- Column: Widget yang digunakan untuk menyusun elemen-elemen secara vertikal. Biasanya digunakan untuk menumpuk widget di dalam arah vertikal, seperti dalam layout form atau daftar item.
+
+- Row: Widget yang digunakan untuk menyusun elemen-elemen secara horizontal. Biasanya digunakan untuk menyusun elemen di samping satu sama lain, seperti tombol navigasi atau ikon bersama teks.
+
+### Halaman Form pada KMStore
+Pada implementasi KMStore Mobile, saya memakai dua form field, yaitu:
+
+- TextFormField
+Form Field ini menerima elemen input berupa sebuah string, nantinya akan dilakukan validasi untuk mengecek apakah form tersebut kosong atau tidak. Untuk menerima input angka saya juga menggunakan TextFormField hanya saja saya menambahkan `keyboardType: TextInputType.number,` untuk membuat keyboard hanya bisa mengetik angka saja dan melakukan validasi apakah negatif atau tidak.
+
+- DropdownButtonFormField
+Form Field ini saya buat berdasarkan enum yang telah saya deklarasi di luar class. Nantinya user dapat memilih salah satu dari pilihan dropdown tersebut. Form Field ini bagus untuk dipakai jika kita memiliki enum atau datatype yang kita bisa petakan sendiri valuenya, sehingga user akan memilih salah satu dari value tersebut. Oleh karena itu, kita tidak perlu memasang validator dikarenakan tidak pasti salah dan kosong dikarenakan kita dapat mengatur default valuenya.
+
+### Mengatur Tema dalam Flutter
+Untuk konsistensi desain, Flutter mendukung penggunaan tema yang dapat diterapkan pada seluruh aplikasi. Saya telah mengatur tema pada widget MaterialApp dengan mengatur properti `theme`. Selanjutnya saya dapat mengatur dengan memasukan `themeData()` yang saya mau seperti berikut:
+```dart
+theme: ThemeData(
+    colorScheme: ColorScheme.fromSwatch(
+        primarySwatch: Colors.blue,
+    ).copyWith(secondary: Colors.lightBlueAccent),
+    useMaterial3: true,
+),
+```
+Disini saya membuat tema warna primary dengan warna biru dan tema warna secondary dengan warna biru muda.
+
+### Navigasi pada Flutter
+Pada Flutter saya menggunakan Navigator untuk mengatur transisi antar halaman. Selain itu, saya membuat sidebar yang berfungsi untuk menavigasi user ke berbagai halaman. Pada sidebar tersebut saya menggunakan Class Navigator yang berfungsi untuk memindahkan user ke halaman lain. Berikut salah satu contoh implementasi saya:
+```dart
+ListTile(
+  leading: const Icon(Icons.keyboard),
+  title: const Text('Tambah Keyboard'),
+  // Jika dipencet, akan memindahkan ke page KeyboardFormPage()
+  onTap: () {
+    Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => const KeyboardFormPage(),
+    ));
+  },
+),
+```
