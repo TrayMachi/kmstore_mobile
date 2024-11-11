@@ -111,6 +111,7 @@ class _KeyboardFormPageState extends State<KeyboardFormPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   hintText: "Stock",
                   labelText: "Stock",

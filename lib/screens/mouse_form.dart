@@ -118,6 +118,7 @@ class _MouseFormPageState extends State<MouseFormPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   hintText: "Stock",
                   labelText: "Stock",
