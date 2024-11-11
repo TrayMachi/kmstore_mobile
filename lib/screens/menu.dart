@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:kmstore_mobile/screens/keyboard_form.dart';
+import 'package:kmstore_mobile/screens/mouse_form.dart';
 
 class MyHomePage extends StatelessWidget {
   final List<ItemHomepage> items = [
     ItemHomepage("Lihat Keyboard", Icons.keyboard),
     ItemHomepage("Tambah Keyboard", Icons.add),
+    ItemHomepage("Tambah Mouse", Icons.add),
     ItemHomepage("Logout", Icons.logout, color: Colors.red),
   ];
 
@@ -98,6 +101,19 @@ class ItemCard extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(SnackBar(
                 content: Text("Kamu telah menekan tombol ${item.name}!")));
+          if (item.name == "Tambah Keyboard") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const KeyboardFormPage()),
+            );
+          } else if (item.name == "Tambah Mouse") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const MouseFormPage()),
+            );
+          }
         },
         // Container untuk menyimpan Icon dan Text
         child: Container(
