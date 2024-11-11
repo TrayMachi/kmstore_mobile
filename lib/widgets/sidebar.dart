@@ -51,7 +51,7 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.mood),
+            leading: const Icon(Icons.keyboard),
             title: const Text('Tambah Keyboard'),
             // Bagian redirection ke MoodEntryFormPage
             onTap: () {
@@ -63,7 +63,7 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.mood),
+            leading: const Icon(Icons.mouse),
             title: const Text('Tambah Mouse'),
             // Bagian redirection ke MoodEntryFormPage
             onTap: () {
