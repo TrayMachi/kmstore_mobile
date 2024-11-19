@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kmstore_mobile/models/keyboard.dart';
-import 'package:kmstore_mobile/models/mouse.dart';
+import 'package:kmstore_mobile/models/keyboard.dart' as k;
+import 'package:kmstore_mobile/models/mouse.dart' as m;
 import 'package:kmstore_mobile/models/product.dart';
 import 'package:kmstore_mobile/widgets/sidebar.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:kmstore_mobile/screens/detail_product.dart';
 import 'package:provider/provider.dart';
 
 class ProductPage extends StatefulWidget {
@@ -14,31 +15,31 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  Future<List<Keyboard>> fetchKeyboard(CookieRequest request) async {
+  Future<List<k.Keyboard>> fetchKeyboard(CookieRequest request) async {
     final response = await request
         .get('http://tristan-agra-kmstore.pbp.cs.ui.ac.id/json/keyboard');
 
     var data = response;
 
-    List<Keyboard> listKeyboard = [];
+    List<k.Keyboard> listKeyboard = [];
     for (var d in data) {
       if (d != null) {
-        listKeyboard.add(Keyboard.fromJson(d));
+        listKeyboard.add(k.Keyboard.fromJson(d));
       }
     }
     return listKeyboard;
   }
 
-  Future<List<Mouse>> fetchMouse(CookieRequest request) async {
+  Future<List<m.Mouse>> fetchMouse(CookieRequest request) async {
     final response = await request
         .get('http://tristan-agra-kmstore.pbp.cs.ui.ac.id/json/mouse');
 
     var data = response;
 
-    List<Mouse> listMouse = [];
+    List<m.Mouse> listMouse = [];
     for (var d in data) {
       if (d != null) {
-        listMouse.add(Mouse.fromJson(d));
+        listMouse.add(m.Mouse.fromJson(d));
       }
     }
     return listMouse;
@@ -75,7 +76,7 @@ class _ProductPageState extends State<ProductPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FutureBuilder<List<Keyboard>>(
+              FutureBuilder<List<k.Keyboard>>(
                 future: fetchKeyboard(request),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -101,7 +102,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         const SizedBox(height: 12.0),
                         SizedBox(
-                          height: 250,
+                          height: 270,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: snapshot.data!.length,
@@ -146,6 +147,30 @@ class _ProductPageState extends State<ProductPage> {
                                             fontSize: 14.0,
                                           ),
                                         ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailProductPage(
+                                                        keyboard: keyboard),
+                                              ),
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                Colors.amber, // Button color
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 10),
+                                          ),
+                                          child: const Text(
+                                            'Detail',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.white),
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -160,7 +185,7 @@ class _ProductPageState extends State<ProductPage> {
                 },
               ),
               const SizedBox(height: 24.0), // Add spacing between sections
-              FutureBuilder<List<Mouse>>(
+              FutureBuilder<List<m.Mouse>>(
                 future: fetchMouse(request),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -186,7 +211,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         const SizedBox(height: 12.0),
                         SizedBox(
-                          height: 250,
+                          height: 270,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: snapshot.data!.length,
@@ -232,6 +257,31 @@ class _ProductPageState extends State<ProductPage> {
                                             fontSize: 14.0,
                                           ),
                                         ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            // Action when button is pressed
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailProductPage(
+                                                        mouse: mouse),
+                                              ),
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                Colors.amber, // Button color
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 10),
+                                          ),
+                                          child: const Text(
+                                            'Detail',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.white),
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -272,7 +322,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         const SizedBox(height: 12.0),
                         SizedBox(
-                          height: 250,
+                          height: 270,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: snapshot.data!.length,
@@ -318,6 +368,74 @@ class _ProductPageState extends State<ProductPage> {
                                             fontSize: 14.0,
                                           ),
                                         ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            if (product.fields.fieldsSwitch != null) {
+                                              final keyboardFields = k.Keyboard(
+                                                model: product.model,
+                                                pk: product.pk,
+                                                fields: k.Fields(
+                                                  name: product.fields.name,
+                                                  price: product.fields.price,
+                                                  description: product.fields.description,
+                                                  stock: product.fields.stock,
+                                                  createdAt: product.fields.createdAt,
+                                                  updatedAt: product.fields.updatedAt,
+                                                  fieldsSwitch: product.fields.fieldsSwitch!,
+                                                  brand: product.fields.brand,
+                                                  image: product.fields.image,
+                                                  author: product.fields.author,
+                                                ),
+                                              );
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DetailProductPage(
+                                                          keyboard: keyboardFields),
+                                                ),
+                                              );
+                                            } else {
+                                              final mouseFields = m.Mouse(
+                                                model: product.model,
+                                                pk: product.pk,
+                                                fields: m.Fields(
+                                                  name: product.fields.name,
+                                                  price: product.fields.price,
+                                                  description: product.fields.description,
+                                                  stock: product.fields.stock,
+                                                  createdAt: product.fields.createdAt,
+                                                  updatedAt: product.fields.updatedAt,
+                                                  dpi: product.fields.dpi!,
+                                                  weight: product.fields.weight!,
+                                                  brand: product.fields.brand,
+                                                  image: product.fields.image,
+                                                  author: product.fields.author,
+                                                ),
+                                              );
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DetailProductPage(
+                                                          mouse: mouseFields),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                Colors.amber, // Button color
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 10),
+                                          ),
+                                          child: const Text(
+                                            'Detail',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.white),
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ),
