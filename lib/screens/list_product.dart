@@ -15,8 +15,8 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   Future<List<Keyboard>> fetchKeyboard(CookieRequest request) async {
-    final response = await request.get(
-        'http://tristan-agra-kmstore.pbp.cs.ui.ac.id/json/keyboard');
+    final response = await request
+        .get('http://tristan-agra-kmstore.pbp.cs.ui.ac.id/json/keyboard');
 
     var data = response;
 
@@ -30,8 +30,8 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   Future<List<Mouse>> fetchMouse(CookieRequest request) async {
-    final response = await request.get(
-        'http://tristan-agra-kmstore.pbp.cs.ui.ac.id/json/mouse');
+    final response = await request
+        .get('http://tristan-agra-kmstore.pbp.cs.ui.ac.id/json/mouse');
 
     var data = response;
 
@@ -45,8 +45,9 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   Future<List<Product>> fetchUserProduct(CookieRequest request) async {
-    final response = await request.get(
-        'http://tristan-agra-kmstore.pbp.cs.ui.ac.id/json/author/');
+    final userId = request.jsonData['id'].toString();
+    final response = await request
+        .get('http://tristan-agra-kmstore.pbp.cs.ui.ac.id/products/$userId');
 
     var data = response;
 
@@ -100,7 +101,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         const SizedBox(height: 12.0),
                         SizedBox(
-                          height: 200,
+                          height: 250,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: snapshot.data!.length,
@@ -121,10 +122,16 @@ class _ProductPageState extends State<ProductPage> {
                                       children: [
                                         Text(
                                           keyboard.fields.name,
+                                          overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                             fontSize: 18.0,
                                             fontWeight: FontWeight.bold,
                                           ),
+                                        ),
+                                        Image.network(
+                                          keyboard.fields.image,
+                                          width: 100,
+                                          height: 100,
                                         ),
                                         const SizedBox(height: 8.0),
                                         Text(
@@ -133,7 +140,6 @@ class _ProductPageState extends State<ProductPage> {
                                             fontSize: 14.0,
                                           ),
                                         ),
-                                        const SizedBox(height: 8.0),
                                         Text(
                                           'Stock: ${keyboard.fields.stock}',
                                           style: const TextStyle(
@@ -180,7 +186,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         const SizedBox(height: 12.0),
                         SizedBox(
-                          height: 200,
+                          height: 250,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: snapshot.data!.length,
@@ -206,9 +212,15 @@ class _ProductPageState extends State<ProductPage> {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
+                                        Image.network(
+                                          mouse.fields.image,
+                                          width: 100,
+                                          height: 100,
+                                        ),
                                         const SizedBox(height: 8.0),
                                         Text(
                                           mouse.fields.description,
+                                          overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                             fontSize: 14.0,
                                           ),
@@ -260,7 +272,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         const SizedBox(height: 12.0),
                         SizedBox(
-                          height: 200,
+                          height: 250,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: snapshot.data!.length,
@@ -286,9 +298,15 @@ class _ProductPageState extends State<ProductPage> {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
+                                        Image.network(
+                                          product.fields.image,
+                                          width: 100,
+                                          height: 100,
+                                        ),
                                         const SizedBox(height: 8.0),
                                         Text(
                                           product.fields.description,
+                                          overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                             fontSize: 14.0,
                                           ),
