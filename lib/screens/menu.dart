@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kmstore_mobile/screens/keyboard_form.dart';
+import 'package:kmstore_mobile/screens/login.dart';
 import 'package:kmstore_mobile/screens/mouse_form.dart';
+import 'package:kmstore_mobile/screens/list_product.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatelessWidget {
   final List<ItemHomepage> items = [
-    ItemHomepage("Lihat Keyboard", Icons.keyboard),
+    ItemHomepage("Lihat Product", Icons.gif_box),
     ItemHomepage("Tambah Keyboard", Icons.add),
     ItemHomepage("Tambah Mouse", Icons.add),
     ItemHomepage("Logout", Icons.logout, color: Colors.red),
@@ -87,6 +91,7 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Material(
       // Menentukan warna latar belakang dari tema aplikasi.
       color: item.color,
@@ -95,7 +100,7 @@ class ItemCard extends StatelessWidget {
 
       child: InkWell(
         // Aksi ketika kartu ditekan.
-        onTap: () {
+        onTap: () async {
           // Menampilkan pesan SnackBar saat kartu ditekan.
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -104,15 +109,40 @@ class ItemCard extends StatelessWidget {
           if (item.name == "Tambah Keyboard") {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) => const KeyboardFormPage()),
+              MaterialPageRoute(builder: (context) => const KeyboardFormPage()),
             );
           } else if (item.name == "Tambah Mouse") {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) => const MouseFormPage()),
+              MaterialPageRoute(builder: (context) => const MouseFormPage()),
             );
+          } else if (item.name == "Lihat Product") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProductPage()),
+            );
+          } else if (item.name == "Logout") {
+            final response = await request.logout(
+                "http://tristan-agra-kmstore.pbp.cs.ui.ac.id/auth/logout/");
+            String message = response["message"];
+            if (context.mounted) {
+              if (response['status']) {
+                String uname = response["username"];
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("$message Sampai jumpa, $uname."),
+                ));
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(message),
+                  ),
+                );
+              }
+            }
           }
         },
         // Container untuk menyimpan Icon dan Text
